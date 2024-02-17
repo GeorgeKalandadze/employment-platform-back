@@ -22,7 +22,7 @@ class CompanyController extends Controller
      */
     public function store(CompanyRequest $request): JsonResponse
     {
-        $user_id = 2;
+        $user_id = auth()->id();
 
         $validatedData = $request->validated();
 
