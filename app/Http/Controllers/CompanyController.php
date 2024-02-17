@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class CompanyController extends Controller
@@ -59,9 +58,26 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CompanyRequest $request, Company $company): JsonResponse
     {
-        //
+        if ($company->user_id !== auth()->id()) {
+            return response()->json(['error' => 'You are not authorized to update this company.'], 403);
+        }
+
+        $validatedData = $request->validated();
+
+        if ($request->hasFile('logo')) {
+            if ($company->logo) {
+                Storage::disk('public')->delete($company->logo);
+            }
+
+            $logoPath = $request->file('logo')->store('company-logos', 'public');
+            $validatedData['logo'] = $logoPath;
+        }
+
+        $company->update($validatedData);
+
+        return response()->json(['message' => 'Company updated successfully'], 200);
     }
 
     /**
