@@ -25,4 +25,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('companies')->group(function () {
     Route::post('/', [CompanyController::class, 'store']);
+    Route::delete('/{company}', [CompanyController::class, 'destroy']);
 });
