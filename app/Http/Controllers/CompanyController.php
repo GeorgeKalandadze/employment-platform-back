@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class CompanyController extends Controller
@@ -12,9 +13,10 @@ class CompanyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        //
+        $companies = Company::all();
+        return response()->json(['companies' => $companies], 200);
     }
 
     /**
@@ -42,18 +44,18 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Company $company): JsonResponse
     {
-        //
+        return response()->json(['company' => $company], 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function userCompanies(): JsonResponse
     {
-        //
+        $user = Auth::user();
+        $companies = $user->companies;
+        return response()->json(['companies' => $companies], 200);
     }
+
 
     /**
      * Update the specified resource in storage.
