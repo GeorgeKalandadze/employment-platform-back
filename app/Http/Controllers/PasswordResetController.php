@@ -12,7 +12,7 @@ class PasswordResetController extends Controller
 {
     public function forgotPassword(ForgotPasswordRequest $request): JsonResponse
     {
-        $status = Password::sendResetLink($request->only('email'));
+        $status = Password::sendResetLink($request->validated());
         $check_link_sent_status = $status === Password::RESET_LINK_SENT;
 
         $response = $check_link_sent_status ? 'Password reset email sent!' : __($status);
@@ -22,7 +22,7 @@ class PasswordResetController extends Controller
 
     public function passwordUpdate(UpdatePasswordRequest $request): JsonResponse
     {
-        $status = Password::reset($request->only('email', 'password', 'password_confirmation', 'token'), function ($user, $password) {
+        $status = Password::reset($request->validated(), function ($user, $password) {
             $user->forceFill(['password' => $password]);
             $user->save();
             event(new PasswordReset($user));
