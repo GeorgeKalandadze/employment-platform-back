@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Notifications\VerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements MustVerifyEmail, JWTSubject
+class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -21,29 +21,25 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
         'password',
     ];
 
-
-    public function sendEmailVerificationNotification() 
+    public function sendEmailVerificationNotification()
     {
         $this->notify(new VerifyEmail());
     }
 
     public function setPasswordAttribute($value)
-	{
-		$this->attributes['password'] = Hash::make($value);
-	}
-	
-    
-    protected $hidden = [
-		'password',
-		'remember_token',
-	];
+    {
+        $this->attributes['password'] = Hash::make($value);
+    }
 
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
     protected $casts = [
-		'email_verified_at' => 'datetime',
-		'password'          => 'hashed',
-	];
-
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 
     public function getJWTIdentifier()
     {

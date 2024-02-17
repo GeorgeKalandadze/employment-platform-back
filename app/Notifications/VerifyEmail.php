@@ -2,22 +2,21 @@
 
 namespace App\Notifications;
 
-use App\Models\User;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailBase;
+use Illuminate\Notifications\Messages\MailMessage;
 
 class VerifyEmail extends VerifyEmailBase
 {
-	public function toMail($notifiable): MailMessage
-	{
-		$url = env('FRONT_BASE_URL') . '/success?email=' . urlencode($notifiable->email);
+    public function toMail($notifiable): MailMessage
+    {
+        $url = env('FRONT_BASE_URL').'/success?email='.urlencode($notifiable->email);
 
-		return (new MailMessage())
-			->subject(('Please verify your email address'))
-			->view(
-				'email.email-verification',
-				['url'  => $url,
-				'name' => $notifiable->name]
-			);
-	}
+        return (new MailMessage())
+            ->subject(('Please verify your email address'))
+            ->view(
+                'email.email-verification',
+                ['url' => $url,
+                    'name' => $notifiable->name]
+            );
+    }
 }
