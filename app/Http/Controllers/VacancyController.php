@@ -3,20 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreVacancyRequest;
+use App\Http\Resources\VacancyResource;
 use App\Models\Company;
 use App\Models\User;
 use App\Models\Vacancy;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class VacancyController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): ResourceCollection
     {
-        //
+        $vacancies = Vacancy::with('subCategory', 'jobType')->get();
+
+        return VacancyResource::collection($vacancies);
     }
 
     /**
