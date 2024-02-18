@@ -103,4 +103,20 @@ class AuthControllerTest extends TestCase
         $response->assertStatus(200)
             ->assertJson(['message' => 'Successfully logged out']);
     }
+
+    public function test_user_can_get_authenticated_user_details()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->getJson('/api/user');
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'data' => [
+                    'id' => $user->id,
+                    'username' => $user->username,
+                    'email' => $user->email,
+                ],
+            ]);
+    }
 }
