@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CourseCreateAsCompanyRequest;
+use App\Http\Requests\CourseCreateAsCompanyRequestRequest;
 use App\Http\Requests\CourseCreateAsUserRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -24,9 +26,25 @@ class CourseController extends Controller
     {
         $validatedData = $request->validated();
         $user = auth()->user();
-        $course = $user->courses()->create($validatedData);
+        $user->courses()->create($validatedData);
         return response()->json(['message' => 'Course created successfully'], 201);
     }
+
+
+    public function storeCourseAsCompany(CourseCreateAsCompanyRequest $request): JsonResponse
+    {
+        $validatedData = $request->validated();
+        $user = auth()->user();
+        $company = $user->companies()->find($validatedData['company_id']);
+
+        if (!$company || $company->user_id !== $user->id) {
+            return response()->json(['error' => 'You are not authorized to create a course under this company.'], 403);
+        }
+        $company->courses()->create($validatedData);
+
+        return response()->json(['message' => 'Course created successfully'], 201);
+    }
+
 
     /**
      * Display the specified resource.

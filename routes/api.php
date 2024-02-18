@@ -49,4 +49,5 @@ Route::prefix('companies')->group(function () {
 
 Route::prefix('courses')->group(function () {
     Route::post('/', [CourseController::class, 'storeCourseAsUser']);
+    Route::post('/store-as-company', [CourseController::class, 'storeCourseAsCompany']);
 });

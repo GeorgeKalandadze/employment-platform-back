@@ -20,6 +20,7 @@ class CompanyFactory extends Factory
     public function definition(): array
     {
         return [
+            'user_id' => 1,
             'name' => $this->faker->company,
             'logo' => 'path/to/default_logo.png',
             'address' => $this->faker->address,
