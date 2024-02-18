@@ -6,6 +6,8 @@ use App\Http\Requests\CompanyRequest;
 use App\Http\Resources\CompanyResource;
 use App\Models\Company;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -14,7 +16,7 @@ class CompanyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): ResourceCollection
     {
         $companies = Company::with('vacancies', 'courses', 'user')->get();
 
@@ -46,21 +48,21 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Company $company): JsonResponse
+    public function show(Company $company): JsonResource
     {
         $company->load('vacancies', 'courses', 'user');
 
-        return response()->json(['company' => new CompanyResource($company)], 200);
+        return new CompanyResource($company);
     }
 
-    public function userCompanies(): JsonResponse
+    public function userCompanies(): ResourceCollection
     {
 
         $user = Auth::user();
 
         $companies = $user->companies()->with('vacancies', 'courses')->get();
 
-        return response()->json(['companies' => $companies], 200);
+        return CompanyResource::collection($companies);
     }
 
     /**
