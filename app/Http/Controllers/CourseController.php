@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CourseCreateAsCompanyRequest;
-use App\Http\Requests\CourseCreateAsCompanyRequestRequest;
 use App\Http\Requests\CourseCreateAsUserRequest;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
