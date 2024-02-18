@@ -4,11 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class AuthControllerTest extends TestCase
@@ -22,7 +17,7 @@ class AuthControllerTest extends TestCase
             'username' => 'John Doe',
             'email' => 'john@example.com',
             'password' => 'password123',
-            'password_confirmation' => 'password123'
+            'password_confirmation' => 'password123',
         ];
 
         $response = $this->postJson('/api/register', $userData);
@@ -75,6 +70,7 @@ class AuthControllerTest extends TestCase
                 'error' => 'Unauthorized',
             ]);
     }
+
     public function test_successful_login_with_username()
     {
         $user = User::factory()->create([
@@ -95,4 +91,16 @@ class AuthControllerTest extends TestCase
             ]);
     }
 
+    /** @test */
+    public function test_user_can_logout()
+    {
+        $user = User::factory()->create();
+
+        $token = auth()->login($user);
+
+        $response = $this->postJson('/api/logout', [], ['Authorization' => 'Bearer '.$token]);
+
+        $response->assertStatus(200)
+            ->assertJson(['message' => 'Successfully logged out']);
+    }
 }
