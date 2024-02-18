@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreVacancyRequest extends FormRequest
+class StoreVacancyAsUserRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,13 +15,11 @@ class StoreVacancyRequest extends FormRequest
     {
         return [
             'sub_category_id' => ['nullable'],
+            'job_type_id' => ['required'],
             'title' => ['required'],
             'description' => ['required'],
             'salary' => ['nullable'],
-            'job_type_id' => ['required'],
             'experience_years' => ['nullable'],
-            'vacancyable_id' => ['required'],
-            'vacancyable_type' => ['required'],
         ];
     }
 }

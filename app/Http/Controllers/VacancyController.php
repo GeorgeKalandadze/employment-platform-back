@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreVacancyRequest;
+use App\Http\Requests\StoreVacancyAsCompanyRequest;
+use App\Http\Requests\StoreVacancyAsUserRequest;
 use App\Http\Resources\VacancyResource;
 use App\Models\Company;
 use App\Models\User;
 use App\Models\Vacancy;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
@@ -23,31 +23,23 @@ class VacancyController extends Controller
         return VacancyResource::collection($vacancies);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreVacancyRequest $request): JsonResponse
+    public function storeVacancyAsCompany(StoreVacancyAsCompanyRequest $request)
     {
-        $requestData = $request->validated();
+        $validatedData = $request->validated();
 
-        $vacancyableType = $requestData['vacancyable_type'];
-        $vacancyableId = $requestData['vacancyable_id'];
-        $vacancyable = null;
+        $company = Company::findOrFail($validatedData['company_id']);
+        $company->vacancies()->create($validatedData);
 
-        if ($vacancyableType === 'App\Models\User') {
-            $vacancyable = User::find($vacancyableId);
-        } elseif ($vacancyableType === 'App\Models\Company') {
-            $vacancyable = Company::find($vacancyableId);
-        }
+        return response()->json(['message' => 'Vacancy created successfully'], 201);
+    }
 
-        // Ensure the entity exists
-        if (! $vacancyable) {
-            return response()->json(['error' => 'Invalid vacancyable_id or vacancyable_type'], 400);
-        }
+    public function storeVacancyAsUser(StoreVacancyAsUserRequest $request)
+    {
+        $validatedData = $request->validated();
+        $userId = auth()->id();
 
-        $vacancy = new Vacancy();
-        $vacancy->fill($requestData);
-        $vacancyable->vacancies()->save($vacancy);
+        $user = User::findOrFail($userId);
+        $user->vacancies()->create($validatedData);
 
         return response()->json(['message' => 'Vacancy created successfully'], 201);
     }
@@ -59,7 +51,6 @@ class VacancyController extends Controller
     {
         return new VacancyResource($vacancy);
     }
-    
 
     /**
      * Update the specified resource in storage.

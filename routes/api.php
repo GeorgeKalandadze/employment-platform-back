@@ -33,7 +33,8 @@ Route::group(['middleware' => ['api', 'auth:api']], function () {
     Route::controller(VacancyController::class)->prefix('vacancies')->name('vacancies.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/{vacancy}', 'show')->name('show');
-        Route::post('/', 'store')->name('store');
+        Route::post('/as-company', 'storeVacancyAsCompany')->name('AsCompany');
+        Route::post('/as-user', 'storeVacancyAsUser')->name('AsUser');
         Route::delete('/{vacancy}', 'delete')->name('delete');
     });
 
