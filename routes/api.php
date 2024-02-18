@@ -1,11 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\CompanyController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\PasswordResetController;
 use Illuminate\Support\Facades\Route;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +19,15 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['api', 'auth:api']], function () {
     Route::get('/user', [AuthController::class, 'user'])->name('user');
 
+    Route::controller(CompanyController::class)->prefix('companies')->name('companies.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{company}', 'show')->name('show');
+        Route::post('/', 'store')->name('store');
+        Route::put('/{company}', 'update')->name('update');
+        Route::delete('/{company}', 'destroy')->name('destroy');
+        Route::get('/user', 'userCompanies')->name('userCompanies');
+    });
+
 });
 
 Route::controller(AuthController::class)->group(function () {
@@ -30,18 +37,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('logout', 'logout')->name('logout');
 });
 
-Route::controller(PasswordResetController::class)->group(function () {
-    Route::post('forgot-password', 'forgotPassword')->name('password.email');
-    Route::post('reset-password', 'passwordUpdate')->name('password.reset');
-});
-
-
-
-Route::prefix('companies')->group(function () {
-    Route::get('/', [CompanyController::class, 'index']);
-    Route::get('/{company}', [CompanyController::class, 'show']);
-    Route::post('/', [CompanyController::class, 'store']);
-    Route::put('/{company}', [CompanyController::class, 'update']);
-    Route::delete('/{company}', [CompanyController::class, 'destroy']);
-    Route::get('/user', [CompanyController::class, 'userCompanies']);
+Route::controller(PasswordResetController::class)->name('password.')->group(function () {
+    Route::post('forgot-password', 'forgotPassword')->name('email');
+    Route::post('reset-password', 'passwordUpdate')->name('reset');
 });
