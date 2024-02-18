@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\CompanyController;
 use Illuminate\Http\Request;
@@ -44,4 +45,8 @@ Route::prefix('companies')->group(function () {
     Route::put('/{company}', [CompanyController::class, 'update']);
     Route::delete('/{company}', [CompanyController::class, 'destroy']);
     Route::get('/user', [CompanyController::class, 'userCompanies']);
+});
+
+Route::prefix('courses')->group(function () {
+    Route::post('/', [CourseController::class, 'storeCourseAsUser']);
 });
