@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CourseCreateAsCompanyRequest;
 use App\Http\Requests\CourseCreateAsUserRequest;
+use App\Http\Resources\CourseResource;
 use App\Models\Course;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,7 +16,9 @@ class CourseController extends Controller
      */
     public function index()
     {
-        //
+        $courses = Course::with('subCategory')->get();
+
+        return CourseResource::collection($courses);
     }
 
     /**

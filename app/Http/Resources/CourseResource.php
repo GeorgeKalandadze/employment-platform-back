@@ -14,6 +14,16 @@ class CourseResource extends JsonResource
      */
     public function toArray(Request $request)
     {
+        $creatorInfo = $this->courseable_type === 'App\\Models\\Company' ?
+            [
+                'name' => $this->courseable->name,
+                'image' => $this->courseable->logo,
+            ] :
+            [
+                'name' => $this->courseable->username,
+                'image' => $this->courseable->avatar_image,
+            ];
+
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -23,6 +33,7 @@ class CourseResource extends JsonResource
             'sub_category' => $this->subCategory,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'creator' => $creatorInfo,
         ];
 
     }
