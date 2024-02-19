@@ -35,7 +35,8 @@ Route::group(['middleware' => ['api', 'auth:api']], function () {
         Route::get('/{vacancy}', 'show')->name('show');
         Route::post('/as-company', 'storeVacancyAsCompany')->name('AsCompany');
         Route::post('/as-user', 'storeVacancyAsUser')->name('AsUser');
-        Route::delete('/{vacancy}', 'delete')->name('delete');
+        Route::put('/{vacancy}', 'update')->name('update');
+        Route::delete('/{vacancy}', 'destroy')->name('destroy');
     });
 
 });
