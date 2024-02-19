@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Company;
+use App\Models\Course;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -64,5 +65,40 @@ class CourseControllerTest extends TestCase
             'courseable_id' => $requestData['company_id'],
             'courseable_type' => Company::class,
         ]);
+    }
+
+    public function testUpdateCourse(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $course = Course::factory()->create(['courseable_id' => $user->id, 'courseable_type' => User::class]);
+
+        $updatedData = [
+            'title' => $this->faker->sentence,
+            'description' => $this->faker->paragraph,
+            'price' => $this->faker->randomFloat(2, 10, 100),
+            'start_date' => now()->addDays(7)->toDateString(),
+        ];
+
+        $response = $this->putJson("/api/courses/{$course->id}", $updatedData);
+
+        $response->assertStatus(200)
+            ->assertJson(['message' => 'Course updated successfully']);
+
+    }
+
+    public function testDeleteCourse(): void
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $course = Course::factory()->create(['courseable_id' => $user->id, 'courseable_type' => User::class]);
+
+        $response = $this->deleteJson("/api/courses/{$course->id}");
+
+        $response->assertStatus(200)
+            ->assertJson(['message' => 'course deleted successfully']);
+
     }
 }
