@@ -5,10 +5,8 @@ namespace Tests\Feature;
 use App\Models\Company;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class CompanyControllerTest extends TestCase
@@ -59,7 +57,7 @@ class CompanyControllerTest extends TestCase
             'description' => 'This is a test company',
         ];
 
-        $response = $this->putJson("/api/companies/{$company->id}", $data );
+        $response = $this->putJson("/api/companies/{$company->id}", $data);
 
         $response->assertStatus(200)
             ->assertJson(['message' => 'Company updated successfully']);
