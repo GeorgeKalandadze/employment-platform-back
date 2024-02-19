@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CourseCreateAsCompanyRequest;
 use App\Http\Requests\CourseCreateAsUserRequest;
 use App\Models\Course;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -27,9 +26,9 @@ class CourseController extends Controller
         $validatedData = $request->validated();
         $user = auth()->user();
         $user->courses()->create($validatedData);
+
         return response()->json(['message' => 'Course created successfully'], 201);
     }
-
 
     public function storeCourseAsCompany(CourseCreateAsCompanyRequest $request): JsonResponse
     {
@@ -37,14 +36,13 @@ class CourseController extends Controller
         $user = auth()->user();
         $company = $user->companies()->find($validatedData['company_id']);
 
-        if (!$company || $company->user_id !== $user->id) {
+        if (! $company || $company->user_id !== $user->id) {
             return response()->json(['error' => 'You are not authorized to create a course under this company.'], 403);
         }
         $company->courses()->create($validatedData);
 
         return response()->json(['message' => 'Course created successfully'], 201);
     }
-
 
     /**
      * Display the specified resource.
@@ -59,13 +57,10 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course): JsonResponse
     {
-        $user = auth()->user();
-
-        if ($course->courseable_type === 'App\\Models\\Company' && $course->courseable->user_id !== $user->id) {
-            return response()->json(['error' => 'You are not authorized to update this course.'], 403);
-        } elseif ($course->courseable_type === 'App\\Models\\User' && $course->courseable_id !== $user->id) {
+        if (! $this->checkAuthorization($course)) {
             return response()->json(['error' => 'You are not authorized to update this course.'], 403);
         }
+
         $validatedData = $request->validate([
             'title' => 'string',
             'description' => 'string',
@@ -83,6 +78,27 @@ class CourseController extends Controller
      */
     public function destroy(Request $request, Course $course)
     {
+        if (! $this->checkAuthorization($course)) {
+            return response()->json(['error' => 'You are not authorized to delete this course.'], 403);
+        }
 
+        $course->delete();
+
+        return response()->json(['message' => 'course deleted successfully'], 200);
+    }
+
+    /**
+     * Check authorization for the given course.
+     */
+    private function checkAuthorization(Course $course): bool
+    {
+        $user = auth()->user();
+        if ($course->courseable_type === 'App\\Models\\Company' && $course->courseable->user_id !== $user->id) {
+            return false;
+        } elseif ($course->courseable_type === 'App\\Models\\User' && $course->courseable_id !== $user->id) {
+            return false;
+        }
+
+        return true;
     }
 }
