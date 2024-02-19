@@ -14,6 +14,17 @@ class VacancyResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
+        $creatorInfo = $this->vacancyable_type === 'App\\Models\\Company' ?
+            [
+                'name' => $this->vacancyable->name,
+                'image' => $this->vacancyable->logo,
+            ] :
+            [
+                'name' => $this->vacancyable->username,
+                'image' => $this->vacancyable->avatar_image,
+            ];
+
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -23,6 +34,7 @@ class VacancyResource extends JsonResource
             'created_at' => $this->created_at,
             'sub_categories' => SubCategoryResource::make($this->subCategory),
             'jobType' => JobTypeResource::make($this->jobType),
+            'creator' => $creatorInfo,
         ];
     }
 }

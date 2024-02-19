@@ -42,13 +42,13 @@ Route::group(['middleware' => ['api', 'auth:api']], function () {
 });
 
 Route::controller(AuthController::class)->group(function () {
-    Route::post('register', 'register')->name('register');
-    Route::post('login', 'login')->name('login');
-    Route::post('email/verify', 'verify')->name('verification.notice');
-    Route::post('logout', 'logout')->name('logout');
+    Route::post('/register', 'register')->name('register');
+    Route::post('/login', 'login')->name('login');
+    Route::post('/email/verify', 'verify')->name('verification.notice');
+    Route::post('/logout', 'logout')->name('logout');
 });
 
 Route::controller(PasswordResetController::class)->name('password.')->group(function () {
-    Route::post('forgot-password', 'forgotPassword')->name('email');
-    Route::post('reset-password', 'passwordUpdate')->name('reset');
+    Route::post('/forgot-password', 'forgotPassword')->name('email');
+    Route::post('/reset-password', 'passwordUpdate')->name('reset');
 });
