@@ -22,6 +22,13 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['api', 'auth:api']], function () {
     Route::get('/user', [AuthController::class, 'user'])->name('user');
 
+    Route::prefix('courses')->group(function () {
+        Route::post('/', [CourseController::class, 'storeCourseAsUser']);
+        Route::post('/store-as-company', [CourseController::class, 'storeCourseAsCompany']);
+        Route::put('/{course}', [CourseController::class, 'update']);
+    });
+
+
 });
 
 Route::controller(AuthController::class)->group(function () {
@@ -47,7 +54,3 @@ Route::prefix('companies')->group(function () {
     Route::get('/user', [CompanyController::class, 'userCompanies']);
 });
 
-Route::prefix('courses')->group(function () {
-    Route::post('/', [CourseController::class, 'storeCourseAsUser']);
-    Route::post('/store-as-company', [CourseController::class, 'storeCourseAsCompany']);
-});
