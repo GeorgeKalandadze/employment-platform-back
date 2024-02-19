@@ -6,8 +6,12 @@ use App\Http\Requests\CourseCreateAsCompanyRequest;
 use App\Http\Requests\CourseCreateAsUserRequest;
 use App\Http\Resources\CourseResource;
 use App\Models\Course;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -50,10 +54,22 @@ class CourseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Course $course): JsonResource
     {
-        //
+        $course->load('subCategory');
+
+        return new CourseResource($course);
     }
+
+
+//    public function userCourses(): ResourceCollection
+//    {
+//
+//        $user = Auth::user();
+//        $courses = $user->courses()->with('subCategory')->get();
+//
+//        return CourseResource::collection($courses);
+//    }
 
     /**
      * Update the specified resource in storage.

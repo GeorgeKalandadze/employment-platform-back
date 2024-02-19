@@ -22,13 +22,18 @@ Route::group(['middleware' => ['api', 'auth:api']], function () {
 
     Route::prefix('courses')->group(function () {
         Route::get('/',[CourseController::class,'index']);
+        Route::get('/{course}',[CourseController::class,'show']);
+
         Route::post('/', [CourseController::class, 'storeCourseAsUser']);
         Route::post('/store-as-company', [CourseController::class, 'storeCourseAsCompany']);
         Route::put('/{course}', [CourseController::class, 'update']);
         Route::delete('/{course}', [CourseController::class, 'destroy']);
+//        Route::get('/user', [CourseController::class, 'userCourses']);
     });
 
+
 });
+
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register')->name('register');
