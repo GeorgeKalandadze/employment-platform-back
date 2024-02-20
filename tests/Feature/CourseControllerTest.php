@@ -79,6 +79,7 @@ class CourseControllerTest extends TestCase
             'description' => $this->faker->paragraph,
             'price' => $this->faker->randomFloat(2, 10, 100),
             'start_date' => now()->addDays(7)->toDateString(),
+            'sub_category_id' => 1
         ];
 
         $response = $this->putJson("/api/courses/{$course->id}", $updatedData);

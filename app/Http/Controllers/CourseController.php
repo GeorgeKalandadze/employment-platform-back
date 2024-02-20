@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CourseCreateAsCompanyRequest;
 use App\Http\Requests\CourseCreateAsUserRequest;
+use App\Http\Requests\CourseUpdateRequest;
 use App\Http\Resources\CourseResource;
 use App\Models\Course;
 use App\Models\User;
@@ -62,30 +63,25 @@ class CourseController extends Controller
     }
 
 
-//    public function userCourses(): ResourceCollection
-//    {
-//
-//        $user = Auth::user();
-//        $courses = $user->courses()->with('subCategory')->get();
-//
-//        return CourseResource::collection($courses);
-//    }
+
+    public function getUserCourses()
+    {
+        $user = Auth::user();
+        $courses = $user->courses()->with('subCategory')->get();
+
+        return CourseResource::collection($courses);
+    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Course $course): JsonResponse
+    public function update(CourseUpdateRequest $request, Course $course): JsonResponse
     {
         if (! $this->checkAuthorization($course)) {
             return response()->json(['error' => 'You are not authorized to update this course.'], 403);
         }
 
-        $validatedData = $request->validate([
-            'title' => 'string',
-            'description' => 'string',
-            'price' => 'numeric',
-            'start_date' => 'date',
-        ]);
+        $validatedData = $request->validated();
 
         $course->update($validatedData);
 

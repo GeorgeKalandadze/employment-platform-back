@@ -19,19 +19,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['api', 'auth:api']], function () {
     Route::get('/user', [AuthController::class, 'user'])->name('user');
-
     Route::prefix('courses')->group(function () {
+        Route::get('/user-courses', [CourseController::class, 'getUserCourses']);
         Route::get('/',[CourseController::class,'index']);
         Route::get('/{course}',[CourseController::class,'show']);
-
         Route::post('/', [CourseController::class, 'storeCourseAsUser']);
         Route::post('/store-as-company', [CourseController::class, 'storeCourseAsCompany']);
         Route::put('/{course}', [CourseController::class, 'update']);
         Route::delete('/{course}', [CourseController::class, 'destroy']);
-//        Route::get('/user', [CourseController::class, 'userCourses']);
     });
-
-
 });
 
 
