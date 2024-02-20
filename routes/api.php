@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VacancyController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +38,10 @@ Route::group(['middleware' => ['api', 'auth:api']], function () {
         Route::post('/as-user', 'storeVacancyAsUser')->name('AsUser');
         Route::put('/{vacancy}', 'update')->name('update');
         Route::delete('/{vacancy}', 'destroy')->name('destroy');
+    });
+
+    Route::controller(UserController::class)->group(function () {
+        Route::put('user/update', 'update')->name('user.update');
     });
 
 });
