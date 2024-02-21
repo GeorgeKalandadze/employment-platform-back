@@ -20,10 +20,10 @@ class AddToFavoriteTest extends TestCase
         Auth::login($user);
         $course = Course::factory()->create();
 
-        $response = $this->postJson("/api/courses/{$course->id}/favorite");
+        $response = $this->postJson("/api/toggle-favorite-course/{$course->id}");
         $response->assertJson(['message' => 'Course added to favorites']);
 
-        $response = $this->postJson("/api/courses/{$course->id}/favorite");
+        $response = $this->postJson("/api/toggle-favorite-course/{$course->id}");
         $response->assertJson(['message' => 'Course removed from favorites']);
     }
 
@@ -34,10 +34,10 @@ class AddToFavoriteTest extends TestCase
         Auth::login($user);
         $vacancy = Vacancy::factory()->create();
 
-        $response = $this->postJson("/api/vacancies/{$vacancy->id}/favorite");
+        $response = $this->postJson("/api/toggle-favorite-vacancy/{$vacancy->id}");
         $response->assertJson(['message' => 'Vacancy added to favorites']);
 
-        $response = $this->postJson("/api/vacancies/{$vacancy->id}/favorite");
+        $response = $this->postJson("/api/toggle-favorite-vacancy/{$vacancy->id}");
         $response->assertJson(['message' => 'Vacancy removed from favorites']);
     }
 }

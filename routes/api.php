@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\VacancyController;
 use Illuminate\Support\Facades\Route;
@@ -29,8 +30,13 @@ Route::group(['middleware' => ['api', 'auth:api']], function () {
         Route::post('/store-as-company', [CourseController::class, 'storeCourseAsCompany']);
         Route::put('/{course}', [CourseController::class, 'update']);
         Route::delete('/{course}', [CourseController::class, 'destroy']);
-        Route::post('/{course}/favorite', [CourseController::class, 'toggleFavoriteCourse']);
     });
+
+    Route::post('/toggle-favorite-course/{course}', [FavoriteController::class, 'toggleFavoriteCourse']);
+    Route::post('/toggle-favorite-vacancy/{vacancy}', [FavoriteController::class, 'toggleFavoriteVacancy']);
+    Route::get('/all-favorites', [FavoriteController::class, 'allFavorites']);
+    Route::get('/all-favorite-courses', [FavoriteController::class, 'allFavoriteCourses']);
+    Route::get('/all-favorite-vacancies', [FavoriteController::class, 'allFavoriteVacancies']);
 });
 
 Route::controller(AuthController::class)->group(function () {
@@ -55,7 +61,6 @@ Route::controller(AuthController::class)->group(function () {
         Route::post('/as-user', 'storeVacancyAsUser')->name('AsUser');
         Route::put('/{vacancy}', 'update')->name('update');
         Route::delete('/{vacancy}', 'destroy')->name('destroy');
-        Route::post('/{vacancy}/favorite', 'toggleFavoriteVacancy')->name('favorite');
     });
 
 });
