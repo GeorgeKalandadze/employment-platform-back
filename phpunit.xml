@@ -24,7 +24,7 @@
             <file>./app/Console/Kernel.php</file>
             <file>./app/Http/Kernel.php</file>
             <file>./app/Http/Controllers/Controller.php</file>
-        </exclude>
+        </exclude> 
     </source>
     <php>
         <env name="APP_ENV" value="testing"/>
