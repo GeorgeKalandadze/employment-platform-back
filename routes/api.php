@@ -4,7 +4,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\PasswordResetController;
-use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\VacancyController;
 use Illuminate\Support\Facades\Route;
 
