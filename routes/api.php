@@ -42,6 +42,8 @@ Route::group(['middleware' => ['api', 'auth:api']], function () {
 
     Route::controller(UserController::class)->group(function () {
         Route::put('user/update', 'update')->name('user.update');
+        Route::post('user/add-email', 'addEmail')->name('email.add');
+        Route::post('confirm-account/{user}', 'confirmEmail')->name('confirm-account');
     });
 
 });
