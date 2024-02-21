@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VacancyController;
 use Illuminate\Support\Facades\Route;
 
@@ -55,6 +56,12 @@ Route::controller(AuthController::class)->group(function () {
         Route::post('/as-user', 'storeVacancyAsUser')->name('AsUser');
         Route::put('/{vacancy}', 'update')->name('update');
         Route::delete('/{vacancy}', 'destroy')->name('destroy');
+    });
+
+    Route::controller(UserController::class)->group(function () {
+        Route::put('user/update', 'update')->name('user.update');
+        Route::post('user/add-email', 'addEmail')->name('email.add');
+        Route::post('confirm-account/{user}', 'confirmEmail')->name('confirm-account');
     });
 
 });
