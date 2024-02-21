@@ -18,7 +18,6 @@ class VacancyFactory extends Factory
      */
     protected $model = Vacancy::class;
 
-
     public function definition(): array
     {
         $subcategoryIds = SubCategory::pluck('id')->toArray();
@@ -30,7 +29,7 @@ class VacancyFactory extends Factory
             'title' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
             'salary' => $this->faker->randomFloat(2, 1000, 10000),
-            'experience_years' => $this->faker->numberBetween(0, 20), 
+            'experience_years' => $this->faker->numberBetween(0, 20),
             'vacancyable_id' => function () {
                 return 1;
             },

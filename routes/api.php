@@ -23,15 +23,15 @@ Route::group(['middleware' => ['api', 'auth:api']], function () {
     Route::get('/user', [AuthController::class, 'user'])->name('user');
     Route::prefix('courses')->group(function () {
         Route::get('/user-courses', [CourseController::class, 'getUserCourses']);
-        Route::get('/',[CourseController::class,'index']);
-        Route::get('/{course}',[CourseController::class,'show']);
+        Route::get('/', [CourseController::class, 'index']);
+        Route::get('/{course}', [CourseController::class, 'show']);
         Route::post('/', [CourseController::class, 'storeCourseAsUser']);
         Route::post('/store-as-company', [CourseController::class, 'storeCourseAsCompany']);
         Route::put('/{course}', [CourseController::class, 'update']);
         Route::delete('/{course}', [CourseController::class, 'destroy']);
+        Route::post('/{course}/favorite', [CourseController::class, 'toggleFavoriteCourse']);
     });
 });
-
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register')->name('register');
@@ -55,6 +55,7 @@ Route::controller(AuthController::class)->group(function () {
         Route::post('/as-user', 'storeVacancyAsUser')->name('AsUser');
         Route::put('/{vacancy}', 'update')->name('update');
         Route::delete('/{vacancy}', 'destroy')->name('destroy');
+        Route::post('/{vacancy}/favorite', 'toggleFavoriteVacancy')->name('favorite');
     });
 
 });

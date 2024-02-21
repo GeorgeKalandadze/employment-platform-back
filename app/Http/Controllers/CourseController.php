@@ -7,11 +7,9 @@ use App\Http\Requests\CourseCreateAsUserRequest;
 use App\Http\Requests\CourseUpdateRequest;
 use App\Http\Resources\CourseResource;
 use App\Models\Course;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
@@ -61,8 +59,6 @@ class CourseController extends Controller
 
         return new CourseResource($course);
     }
-
-
 
     public function getUserCourses()
     {
@@ -115,5 +111,27 @@ class CourseController extends Controller
         }
 
         return true;
+    }
+
+    public function toggleFavoriteCourse(Course $course): JsonResponse
+    {
+        $user = auth()->user();
+
+        $existingFavorite = $user->favorites()->where('favoritable_id', $course->id)
+            ->where('favoritable_type', Course::class)
+            ->first();
+
+        if ($existingFavorite) {
+            $existingFavorite->delete();
+
+            return response()->json(['message' => 'Course removed from favorites']);
+        } else {
+            $user->favorites()->create([
+                'favoritable_id' => $course->id,
+                'favoritable_type' => Course::class,
+            ]);
+
+            return response()->json(['message' => 'Course added to favorites']);
+        }
     }
 }

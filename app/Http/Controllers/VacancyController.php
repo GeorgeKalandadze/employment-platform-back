@@ -56,20 +56,18 @@ class VacancyController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    public function update(UpdateVacancyRequest $request, Vacancy $vacancy): JsonResponse
+    {
+        if (! $this->checkAuthorization($vacancy)) {
+            return response()->json(['error' => 'You are not authorized to update this vacan$vacancy.'], 403);
+        }
 
+        $vacancy->update($request->validated());
 
-     public function update(UpdateVacancyRequest $request, Vacancy $vacancy): JsonResponse
-     {
-         if (! $this->checkAuthorization($vacancy)) {
-             return response()->json(['error' => 'You are not authorized to update this vacan$vacancy.'], 403);
-         }
- 
-         $vacancy->update($request->validated());
- 
-         return response()->json(['message' => 'Vacancy updated successfully'], 200);
-     }
+        return response()->json(['message' => 'Vacancy updated successfully'], 200);
+    }
 
-     public function destroy(Vacancy $vacancy)
+    public function destroy(Vacancy $vacancy)
     {
         if (! $this->checkAuthorization($vacancy)) {
             return response()->json(['error' => 'You are not authorized to delete this vaca$vacancy.'], 403);
@@ -93,5 +91,27 @@ class VacancyController extends Controller
         }
 
         return true;
+    }
+
+    public function toggleFavoriteVacancy(Vacancy $vacancy): JsonResponse
+    {
+        $user = auth()->user();
+
+        $existingFavorite = $user->favorites()->where('favoritable_id', $vacancy->id)
+            ->where('favoritable_type', Vacancy::class)
+            ->first();
+
+        if ($existingFavorite) {
+            $existingFavorite->delete();
+
+            return response()->json(['message' => 'Vacancy removed from favorites']);
+        } else {
+            $user->favorites()->create([
+                'favoritable_id' => $vacancy->id,
+                'favoritable_type' => Vacancy::class,
+            ]);
+
+            return response()->json(['message' => 'Vacancy added to favorites']);
+        }
     }
 }

@@ -26,6 +26,7 @@ class CourseFactory extends Factory
     public function definition()
     {
         $subcategoryIds = SubCategory::pluck('id')->toArray();
+
         return [
             'title' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
