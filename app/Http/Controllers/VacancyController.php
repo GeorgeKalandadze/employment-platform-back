@@ -92,26 +92,4 @@ class VacancyController extends Controller
 
         return true;
     }
-
-    public function toggleFavoriteVacancy(Vacancy $vacancy): JsonResponse
-    {
-        $user = auth()->user();
-
-        $existingFavorite = $user->favorites()->where('favoritable_id', $vacancy->id)
-            ->where('favoritable_type', Vacancy::class)
-            ->first();
-
-        if ($existingFavorite) {
-            $existingFavorite->delete();
-
-            return response()->json(['message' => 'Vacancy removed from favorites']);
-        } else {
-            $user->favorites()->create([
-                'favoritable_id' => $vacancy->id,
-                'favoritable_type' => Vacancy::class,
-            ]);
-
-            return response()->json(['message' => 'Vacancy added to favorites']);
-        }
-    }
 }

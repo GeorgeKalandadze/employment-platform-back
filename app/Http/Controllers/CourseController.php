@@ -113,25 +113,4 @@ class CourseController extends Controller
         return true;
     }
 
-    public function toggleFavoriteCourse(Course $course): JsonResponse
-    {
-        $user = auth()->user();
-
-        $existingFavorite = $user->favorites()->where('favoritable_id', $course->id)
-            ->where('favoritable_type', Course::class)
-            ->first();
-
-        if ($existingFavorite) {
-            $existingFavorite->delete();
-
-            return response()->json(['message' => 'Course removed from favorites']);
-        } else {
-            $user->favorites()->create([
-                'favoritable_id' => $course->id,
-                'favoritable_type' => Course::class,
-            ]);
-
-            return response()->json(['message' => 'Course added to favorites']);
-        }
-    }
 }

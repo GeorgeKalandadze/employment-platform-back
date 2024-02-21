@@ -2,36 +2,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\FavoriteResource;
 use App\Models\Course;
 use App\Models\Vacancy;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class FavoriteController extends Controller
 {
 
-    public function allFavorites(): JsonResponse
+    public function allFavorites(): ResourceCollection
     {
         $user = auth()->user();
         $favorites = $user->favorites()->with('favoritable')->get();
 
-        return response()->json(['favorites' => $favorites]);
+        return FavoriteResource::collection($favorites);
     }
 
-    public function allFavoriteCourses(): JsonResponse
+    public function allFavoriteCourses(): ResourceCollection
     {
         $user = auth()->user();
         $favoriteCourses = $user->favorites()->where('favoritable_type', Course::class)->with('favoritable')->get();
 
-        return response()->json(['favorite_courses' => $favoriteCourses]);
+        return FavoriteResource::collection($favoriteCourses);
     }
 
-    public function allFavoriteVacancies(): JsonResponse
+    public function allFavoriteVacancies(): ResourceCollection
     {
         $user = auth()->user();
         $favoriteVacancies = $user->favorites()->where('favoritable_type', Vacancy::class)->with('favoritable')->get();
 
-        return response()->json(['favorite_vacancies' => $favoriteVacancies]);
+        return FavoriteResource::collection($favoriteVacancies);
     }
 
     public function toggleFavoriteCourse(Course $course): JsonResponse
