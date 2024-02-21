@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['api', 'auth:api']], function () {
 
     Route::get('/user', [AuthController::class, 'user'])->name('user');
+    
     Route::prefix('courses')->group(function () {
         Route::get('/user-courses', [CourseController::class, 'getUserCourses']);
         Route::get('/',[CourseController::class,'index']);
@@ -31,14 +32,6 @@ Route::group(['middleware' => ['api', 'auth:api']], function () {
         Route::put('/{course}', [CourseController::class, 'update']);
         Route::delete('/{course}', [CourseController::class, 'destroy']);
     });
-});
-
-
-Route::controller(AuthController::class)->group(function () {
-    Route::post('register', 'register')->name('register');
-    Route::post('login', 'login')->name('login');
-    Route::post('email/verify', 'verify')->name('verification.notice');
-    Route::post('logout', 'logout')->name('logout');
 
     Route::controller(CompanyController::class)->prefix('companies')->name('companies.')->group(function () {
         Route::get('/', 'index')->name('index');
@@ -63,8 +56,8 @@ Route::controller(AuthController::class)->group(function () {
         Route::post('user/add-email', 'addEmail')->name('email.add');
         Route::post('confirm-account/{user}', 'confirmEmail')->name('confirm-account');
     });
-
 });
+
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register')->name('register');
