@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\JobType;
 use App\Models\SubCategory;
 use App\Models\Vacancy;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -21,7 +22,7 @@ class VacancyFactory extends Factory
     public function definition(): array
     {
         $subcategoryIds = SubCategory::pluck('id')->toArray();
-        $jobTypeIds = SubCategory::pluck('id')->toArray();
+        $jobTypeIds = JobType::pluck('id')->toArray();
 
         return [
             'sub_category_id' => $this->faker->randomElement($subcategoryIds),
