@@ -3,8 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CourseController;
-use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VacancyController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,28 +22,16 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['api', 'auth:api']], function () {
 
     Route::get('/user', [AuthController::class, 'user'])->name('user');
+    
     Route::prefix('courses')->group(function () {
         Route::get('/user-courses', [CourseController::class, 'getUserCourses']);
-        Route::get('/', [CourseController::class, 'index']);
-        Route::get('/{course}', [CourseController::class, 'show']);
+        Route::get('/',[CourseController::class,'index']);
+        Route::get('/{course}',[CourseController::class,'show']);
         Route::post('/', [CourseController::class, 'storeCourseAsUser']);
         Route::post('/store-as-company', [CourseController::class, 'storeCourseAsCompany']);
         Route::put('/{course}', [CourseController::class, 'update']);
         Route::delete('/{course}', [CourseController::class, 'destroy']);
     });
-
-    Route::post('/toggle-favorite-course/{course}', [FavoriteController::class, 'toggleFavoriteCourse']);
-    Route::post('/toggle-favorite-vacancy/{vacancy}', [FavoriteController::class, 'toggleFavoriteVacancy']);
-    Route::get('/all-favorites', [FavoriteController::class, 'allFavorites']);
-    Route::get('/all-favorite-courses', [FavoriteController::class, 'allFavoriteCourses']);
-    Route::get('/all-favorite-vacancies', [FavoriteController::class, 'allFavoriteVacancies']);
-});
-
-Route::controller(AuthController::class)->group(function () {
-    Route::post('register', 'register')->name('register');
-    Route::post('login', 'login')->name('login');
-    Route::post('email/verify', 'verify')->name('verification.notice');
-    Route::post('logout', 'logout')->name('logout');
 
     Route::controller(CompanyController::class)->prefix('companies')->name('companies.')->group(function () {
         Route::get('/', 'index')->name('index');
@@ -63,7 +51,13 @@ Route::controller(AuthController::class)->group(function () {
         Route::delete('/{vacancy}', 'destroy')->name('destroy');
     });
 
+    Route::controller(UserController::class)->group(function () {
+        Route::put('user/update', 'update')->name('user.update');
+        Route::post('user/add-email', 'addEmail')->name('email.add');
+        Route::post('confirm-account/{user}', 'confirmEmail')->name('confirm-account');
+    });
 });
+
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register')->name('register');
