@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\RateController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VacancyController;
 use Illuminate\Support\Facades\Route;
@@ -22,15 +23,15 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['api', 'auth:api']], function () {
 
     Route::get('/user', [AuthController::class, 'user'])->name('user');
-    
-    Route::prefix('courses')->group(function () {
-        Route::get('/user-courses', [CourseController::class, 'getUserCourses']);
-        Route::get('/',[CourseController::class,'index']);
-        Route::get('/{course}',[CourseController::class,'show']);
-        Route::post('/', [CourseController::class, 'storeCourseAsUser']);
-        Route::post('/store-as-company', [CourseController::class, 'storeCourseAsCompany']);
-        Route::put('/{course}', [CourseController::class, 'update']);
-        Route::delete('/{course}', [CourseController::class, 'destroy']);
+
+    Route::controller(CourseController::class)->prefix('courses')->group(function () {
+        Route::get('/user-courses', 'getUserCourses')->name('getUserCourses');
+        Route::get('/', 'index')->name('index');
+        Route::get('/{course}', 'show')->name('show');
+        Route::post('/', 'storeCourseAsUser')->name('storeCourseAsUser');
+        Route::post('/store-as-company', 'storeCourseAsCompany')->name('storeCourseAsCompany');
+        Route::put('/{course}', 'update')->name('update');
+        Route::delete('/{course}', 'destroy')->name('destroy');
     });
 
     Route::controller(CompanyController::class)->prefix('companies')->name('companies.')->group(function () {
@@ -47,6 +48,7 @@ Route::group(['middleware' => ['api', 'auth:api']], function () {
         Route::get('/{vacancy}', 'show')->name('show');
         Route::post('/as-company', 'storeVacancyAsCompany')->name('AsCompany');
         Route::post('/as-user', 'storeVacancyAsUser')->name('AsUser');
+        Route::post('/{id}/views', 'updateViews')->name('views');
         Route::put('/{vacancy}', 'update')->name('update');
         Route::delete('/{vacancy}', 'destroy')->name('destroy');
     });
@@ -56,8 +58,9 @@ Route::group(['middleware' => ['api', 'auth:api']], function () {
         Route::post('user/add-email', 'addEmail')->name('email.add');
         Route::post('confirm-account/{user}', 'confirmEmail')->name('confirm-account');
     });
-});
 
+    Route::post('/courses/{course}/rates', [RateController::class, 'store']);
+});
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register')->name('register');

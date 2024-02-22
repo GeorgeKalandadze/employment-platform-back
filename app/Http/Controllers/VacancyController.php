@@ -54,6 +54,17 @@ class VacancyController extends Controller
     }
 
     /**
+     * Update vacancy views
+     */
+    public function updateViews($id): JsonResponse
+    {
+        $vacancy = Vacancy::findOrFail($id);
+        $vacancy->increment('views_count');
+
+        return response()->json('View count updated');
+    }
+
+    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateVacancyRequest $request, Vacancy $vacancy): JsonResponse

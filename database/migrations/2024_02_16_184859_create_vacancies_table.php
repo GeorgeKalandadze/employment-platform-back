@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->decimal('salary', 10, 2);
+            $table->integer('views_count')->default(0);
             $table->foreignId('job_type_id')->constrained()->onDelete('cascade');
             $table->integer('experience_years');
             $table->morphs('vacancyable');
