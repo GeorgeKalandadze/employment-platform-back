@@ -24,15 +24,25 @@ class CourseResource extends JsonResource
                 'image' => $this->courseable->avatar_image,
             ];
 
+            $ratings = $this->rates->pluck('rating');
+        
+            $totalRatings = count($ratings);
+            $sumRatings = $ratings->sum();
+            // Calculate average rating
+            $averageRating = $totalRatings > 0 ? $sumRatings / $totalRatings : 0;
+            // Convert average rating to stars
+            $stars = round($averageRating);
+
         return [
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
             'price' => $this->price,
             'start_date' => $this->start_date,
-            'sub_category' => $this->subCategory,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'stars' => $stars,
+            'sub_category' => $this->subCategory,
             'creator' => $creatorInfo,
         ];
 

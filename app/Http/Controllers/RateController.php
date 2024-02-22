@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRateRequest;
 use App\Models\Course;
-use Illuminate\Http\Request;
 
 class RateController extends Controller
 {
+
     public function store(StoreRateRequest $request, Course $course)
     {
         $existingRating = $course->rates()->where('user_id', auth()->id())->first();
