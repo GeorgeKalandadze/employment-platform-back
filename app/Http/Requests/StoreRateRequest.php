@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRateRequest extends FormRequest
 {
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -15,7 +14,7 @@ class StoreRateRequest extends FormRequest
     public function rules(): array
     {
         return [
-           'rating' => ['required']
+            'rating' => ['required'],
         ];
     }
 }

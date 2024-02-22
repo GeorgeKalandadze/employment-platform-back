@@ -19,7 +19,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::with('subCategory','rates')->get();
+        $courses = Course::with('subCategory', 'rates')->get();
 
         return CourseResource::collection($courses);
     }

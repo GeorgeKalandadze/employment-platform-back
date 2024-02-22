@@ -15,23 +15,18 @@ class CourseResource extends JsonResource
     public function toArray(Request $request)
     {
         $creatorInfo = $this->courseable_type === 'App\\Models\\Company' ?
-            [
-                'name' => $this->courseable->name,
-                'image' => $this->courseable->logo,
-            ] :
-            [
-                'name' => $this->courseable->username,
-                'image' => $this->courseable->avatar_image,
-            ];
+        [
+            'name' => $this->courseable->name,
+            'image' => $this->courseable->logo,
+        ] :
+        [
+            'name' => $this->courseable->username,
+            'image' => $this->courseable->avatar_image,
+        ];
 
-            $ratings = $this->rates->pluck('rating');
-        
-            $totalRatings = count($ratings);
-            $sumRatings = $ratings->sum();
-            // Calculate average rating
-            $averageRating = $totalRatings > 0 ? $sumRatings / $totalRatings : 0;
-            // Convert average rating to stars
-            $stars = round($averageRating);
+        // Calculate average rating and convert it to stars
+        $averageRating = $this->rates->avg('rating');
+        $stars = round($averageRating);
 
         return [
             'id' => $this->id,
