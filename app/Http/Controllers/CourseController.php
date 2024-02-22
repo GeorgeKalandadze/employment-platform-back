@@ -112,4 +112,5 @@ class CourseController extends Controller
 
         return true;
     }
+
 }
