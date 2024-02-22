@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ratings', function (Blueprint $table) {
+        Schema::create('rates', function (Blueprint $table) {
             $table->id();
-            $table->decimal('rating',5,2);
-            $table->morphs('rateable');
+            $table->foreignId('user_id');
+            $table->foreignId('course_id');
+            $table->decimal('rating', 5, 2);
             $table->timestamps();
         });
     }
