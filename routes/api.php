@@ -24,14 +24,14 @@ Route::group(['middleware' => ['api', 'auth:api']], function () {
 
     Route::get('/user', [AuthController::class, 'user'])->name('user');
 
-    Route::prefix('courses')->group(function () {
-        Route::get('/user-courses', [CourseController::class, 'getUserCourses']);
-        Route::get('/', [CourseController::class, 'index']);
-        Route::get('/{course}', [CourseController::class, 'show']);
-        Route::post('/', [CourseController::class, 'storeCourseAsUser']);
-        Route::post('/store-as-company', [CourseController::class, 'storeCourseAsCompany']);
-        Route::put('/{course}', [CourseController::class, 'update']);
-        Route::delete('/{course}', [CourseController::class, 'destroy']);
+    Route::controller(CourseController::class)->prefix('courses')->group(function () {
+        Route::get('/user-courses', 'getUserCourses')->name('getUserCourses');
+        Route::get('/', 'index')->name('index');
+        Route::get('/{course}', 'show')->name('show');
+        Route::post('/', 'storeCourseAsUser')->name('storeCourseAsUser');
+        Route::post('/store-as-company', 'storeCourseAsCompany')->name('storeCourseAsCompany');
+        Route::put('/{course}', 'update')->name('update');
+        Route::delete('/{course}', 'destroy')->name('destroy');
     });
 
     Route::controller(CompanyController::class)->prefix('companies')->name('companies.')->group(function () {
@@ -53,14 +53,13 @@ Route::group(['middleware' => ['api', 'auth:api']], function () {
         Route::delete('/{vacancy}', 'destroy')->name('destroy');
     });
 
-    Route::post('/courses/{course}/rates', [RateController::class, 'store']);
-
-
     Route::controller(UserController::class)->group(function () {
         Route::put('user/update', 'update')->name('user.update');
         Route::post('user/add-email', 'addEmail')->name('email.add');
         Route::post('confirm-account/{user}', 'confirmEmail')->name('confirm-account');
     });
+
+    Route::post('/courses/{course}/rates', [RateController::class, 'store']);
 });
 
 Route::controller(AuthController::class)->group(function () {
