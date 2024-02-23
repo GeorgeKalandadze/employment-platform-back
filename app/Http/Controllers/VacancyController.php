@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewVacancyAdded;
 use App\Http\Requests\StoreVacancyAsCompanyRequest;
 use App\Http\Requests\StoreVacancyAsUserRequest;
 use App\Http\Requests\UpdateVacancyRequest;
@@ -29,7 +30,9 @@ class VacancyController extends Controller
         $validatedData = $request->validated();
 
         $company = Company::findOrFail($validatedData['company_id']);
-        $company->vacancies()->create($validatedData);
+        $vacancy = $company->vacancies()->create($validatedData);
+
+        event(new NewVacancyAdded($company, $vacancy));
 
         return response()->json(['message' => 'Vacancy created successfully'], 201);
     }
