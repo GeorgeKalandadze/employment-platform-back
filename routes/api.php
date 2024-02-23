@@ -42,6 +42,7 @@ Route::group(['middleware' => ['api', 'auth:api']], function () {
         Route::put('/{company}', 'update')->name('update');
         Route::delete('/{company}', 'destroy')->name('destroy');
         Route::get('/user', 'userCompanies')->name('userCompanies');
+        Route::post('{company}/toggle-follow', 'toggleFollow');
     });
 
     Route::controller(VacancyController::class)->prefix('vacancies')->name('vacancies.')->group(function () {
