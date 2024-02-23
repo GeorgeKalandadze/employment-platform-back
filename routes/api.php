@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\RateController;
 use App\Http\Controllers\UserController;
@@ -60,6 +61,15 @@ Route::group(['middleware' => ['api', 'auth:api']], function () {
     });
 
     Route::post('/courses/{course}/rates', [RateController::class, 'store']);
+
+    Route::controller(FavoriteController::class)->group(function () {
+        Route::post('/toggle-favorite-course/{course}', 'toggleFavoriteCourse');
+        Route::post('/toggle-favorite-vacancy/{vacancy}', 'toggleFavoriteVacancy');
+        Route::get('/all-favorites', 'allFavorites');
+        Route::get('/all-favorite-courses',  'allFavoriteCourses');
+        Route::get('/all-favorite-vacancies', 'allFavoriteVacancies');
+    });
+
 });
 
 Route::controller(AuthController::class)->group(function () {
