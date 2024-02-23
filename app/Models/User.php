@@ -6,6 +6,7 @@ use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -75,6 +76,12 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return $this->getKey();
     }
 
+    public function followedCompanies(): BelongsToMany
+    {
+        return $this->belongsToMany(Company::class, 'company_followers', 'user_id', 'company_id')
+            ->withTimestamps();
+    }
+
     /**
      * Return a key value array, containing any custom claims to be added to the JWT.
      *
@@ -84,4 +91,6 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     {
         return [];
     }
+
+
 }
