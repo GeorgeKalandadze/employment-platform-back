@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Str;
 
 class Vacancy extends Model
 {
@@ -19,6 +20,7 @@ class Vacancy extends Model
         'salary',
         'job_type_id',
         'experience_years',
+        'slug',
         'vacancyable_id',
         'vacancyable_type',
     ];
@@ -41,5 +43,15 @@ class Vacancy extends Model
     public function favorites(): MorphMany
     {
         return $this->morphMany(Favorite::class, 'favoritable');
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($vacancy) {
+            $slug = Str::random(24);
+            $vacancy->slug = $slug . '-' . Str::slug($vacancy->title);
+        });
     }
 }
