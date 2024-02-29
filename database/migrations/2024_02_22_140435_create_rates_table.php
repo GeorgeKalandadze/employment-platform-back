@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rate_course', function (Blueprint $table) {
+        Schema::create('rates', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('course_id');
+            $table->decimal('rating', 5, 2);
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rate_course');
+        Schema::dropIfExists('rates');
     }
 };
