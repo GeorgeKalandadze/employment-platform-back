@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SocialNetwork extends Model
 {
-    
+    protected $fillable = ['company_id', 'link'];
 
     public function companies(): BelongsTo
     {
