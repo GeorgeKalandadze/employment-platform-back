@@ -43,6 +43,9 @@ class Company extends Model
         return $this->belongsToMany(User::class, 'company_followers', 'company_id', 'user_id')
             ->withTimestamps();
     }
-
+    public function socialNetworks(): MorphMany 
+    {
+        return $this->MorphMany(SocialNetwork::class, 'sociable');
+    }
 
 }

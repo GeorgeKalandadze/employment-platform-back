@@ -71,15 +71,15 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return $this->hasMany(Favorite::class);
     }
 
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
-
     public function followedCompanies(): BelongsToMany
     {
         return $this->belongsToMany(Company::class, 'company_followers', 'user_id', 'company_id')
             ->withTimestamps();
+    }
+
+    public function socialNetworks(): MorphMany 
+    {
+        return $this->MorphMany(SocialNetwork::class, 'sociable');
     }
 
     /**
@@ -90,6 +90,10 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function getJWTCustomClaims()
     {
         return [];
+    }
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
     }
 
 
