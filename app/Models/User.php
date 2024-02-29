@@ -76,12 +76,6 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return $this->belongsToMany(Company::class, 'company_followers', 'user_id', 'company_id')
             ->withTimestamps();
     }
-
-    public function socialNetworks(): MorphMany 
-    {
-        return $this->MorphMany(SocialNetwork::class, 'sociable');
-    }
-
     /**
      * Return a key value array, containing any custom claims to be added to the JWT.
      *

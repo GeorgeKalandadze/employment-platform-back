@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class SocialNetwork extends Model
 {
     
-    public function sociable(): MorphTo
+    public function companies(): MorphTo
     {
-        return $this->morphTo();
+        return $this->belongsTo(Company::class);
     }
 }
