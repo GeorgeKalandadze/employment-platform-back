@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('social_networks', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('company_id');
             $table->string('link');
-            $table->morphs('sociable');
             $table->timestamps();
         });
     }
