@@ -31,7 +31,6 @@ class CompanyController extends Controller
         $user_id = auth()->id();
 
         $validatedData = $request->validated();
-
         $validatedData['user_id'] = $user_id;
 
         if ($request->hasFile('logo')) {
@@ -42,13 +41,15 @@ class CompanyController extends Controller
 
         $company = Company::create($validatedData);
 
-        $array = trim($validatedData['links'], '[]');
-        $links = explode(',',$array);
+        if (isset($validatedData['links'])) {
+            $array = trim($validatedData['links'], '[]');
+            $links = explode(',', $array);
 
-        foreach ($links as $link) {
-            $company->socialNetworks()->create([
-                'link' => $link,
-            ]);
+            foreach ($links as $link) {
+                $company->socialNetworks()->create([
+                    'link' => $link,
+                ]);
+            }
         }
 
         return response()->json(['message' => 'Company created successfully'], 201);
