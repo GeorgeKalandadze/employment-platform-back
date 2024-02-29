@@ -76,6 +76,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return $this->belongsToMany(Company::class, 'company_followers', 'user_id', 'company_id')
             ->withTimestamps();
     }
+
     /**
      * Return a key value array, containing any custom claims to be added to the JWT.
      *
@@ -85,10 +86,9 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     {
         return [];
     }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
     }
-
-
 }

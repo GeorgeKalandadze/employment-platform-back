@@ -23,6 +23,7 @@ class CompanyRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:25', 'unique:companies'],
+            'links' => ['nullable', 'string'],
             'logo' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
             'address' => ['nullable', 'string', 'max:255'],
             'mobile_number' => ['nullable', 'string', 'max:20'],

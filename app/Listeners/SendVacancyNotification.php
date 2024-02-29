@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Events\NewVacancyAdded;
 use App\Notifications\NewVacancyNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class SendVacancyNotification
 {

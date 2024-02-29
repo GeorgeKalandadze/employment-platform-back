@@ -44,9 +44,9 @@ class Company extends Model
         return $this->belongsToMany(User::class, 'company_followers', 'company_id', 'user_id')
             ->withTimestamps();
     }
-    public function socialNetworks(): HasMany 
+
+    public function socialNetworks(): HasMany
     {
         return $this->HasMany(SocialNetwork::class);
     }
-
 }
