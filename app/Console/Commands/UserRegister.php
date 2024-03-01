@@ -37,6 +37,8 @@ class UserRegister extends Command
             'password' => Hash::make($password),
         ]);
 
+        $user->markEmailAsVerified();
+
         $this->info('User registered successfully!');
     }
 }
