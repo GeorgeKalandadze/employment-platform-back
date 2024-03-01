@@ -18,7 +18,7 @@ class CompanyController extends Controller
      */
     public function index(): ResourceCollection
     {
-        $companies = Company::with('vacancies', 'courses', 'user')->get();
+        $companies = Company::with('vacancies', 'courses', 'user', 'socialNetworks')->get();
 
         return CompanyResource::collection($companies);
     }
