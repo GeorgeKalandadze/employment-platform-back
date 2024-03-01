@@ -12,6 +12,7 @@ use App\Models\Company;
 use App\Models\Resume;
 use App\Models\User;
 use App\Models\Vacancy;
+use App\Notifications\ResumeSubmittedNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
@@ -109,7 +110,10 @@ class VacancyController extends Controller
             'phone' => $request->input('phone'),
         ];
 
-        Resume::create($resumeData);
+        $resume = Resume::create($resumeData);
+
+        $vacancyOwner = $vacancy->vacancyable;
+        $vacancyOwner->notify(new ResumeSubmittedNotification($vacancy, $resume));
 
         return response()->json(['message' => 'Resume submitted successfully'], 201);
     }
