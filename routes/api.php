@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CityController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\FavoriteController;
@@ -24,6 +25,10 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['api', 'auth:api']], function () {
 
     Route::get('/user', [AuthController::class, 'user'])->name('user');
+
+    Route::post('/courses/{course}/rates', [RateController::class, 'store'])->name('store.rate');
+
+    Route::get('/cities', [CityController::class, 'index'])->name('index');
 
     Route::controller(CourseController::class)->prefix('courses')->group(function () {
         Route::get('/user-courses', 'getUserCourses')->name('getUserCourses');
@@ -61,13 +66,11 @@ Route::group(['middleware' => ['api', 'auth:api']], function () {
         Route::post('confirm-account/{user}', 'confirmEmail')->name('confirm-account');
     });
 
-    Route::post('/courses/{course}/rates', [RateController::class, 'store']);
-
     Route::controller(FavoriteController::class)->group(function () {
         Route::post('/toggle-favorite-course/{course}', 'toggleFavoriteCourse');
         Route::post('/toggle-favorite-vacancy/{vacancy}', 'toggleFavoriteVacancy');
         Route::get('/all-favorites', 'allFavorites');
-        Route::get('/all-favorite-courses',  'allFavoriteCourses');
+        Route::get('/all-favorite-courses', 'allFavoriteCourses');
         Route::get('/all-favorite-vacancies', 'allFavoriteVacancies');
     });
 

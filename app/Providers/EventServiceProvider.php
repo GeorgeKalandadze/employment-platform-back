@@ -22,7 +22,7 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         NewVacancyAdded::class => [
-            SendVacancyNotification::class
+            SendVacancyNotification::class,
         ],
     ];
 

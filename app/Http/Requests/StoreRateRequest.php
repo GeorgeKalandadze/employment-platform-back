@@ -14,7 +14,7 @@ class StoreRateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'rating' => ['required', 'numeric', 'between:1,5'], 
+            'rating' => ['required', 'numeric', 'between:1,5'],
         ];
     }
 }

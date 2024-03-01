@@ -6,12 +6,10 @@ use App\Http\Resources\FavoriteResource;
 use App\Models\Course;
 use App\Models\Vacancy;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class FavoriteController extends Controller
 {
-
     public function allFavorites(): ResourceCollection
     {
         $user = auth()->user();
