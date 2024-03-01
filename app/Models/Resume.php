@@ -8,6 +8,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Resume extends Model
 {
+
+    protected $fillable = [
+        'file_path',
+        'vacancy_id',
+        'user_id',
+        'resume',
+        'first_name',
+        'last_name',
+        'email',
+        'phone'
+    ];
     use HasFactory;
 
     public function vacancy(): BelongsTo

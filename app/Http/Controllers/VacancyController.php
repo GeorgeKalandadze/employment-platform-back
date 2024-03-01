@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Events\NewVacancyAdded;
+use App\Http\Requests\ResumeRequest;
 use App\Http\Requests\StoreVacancyAsCompanyRequest;
 use App\Http\Requests\StoreVacancyAsUserRequest;
 use App\Http\Requests\UpdateVacancyRequest;
 use App\Http\Resources\VacancyResource;
 use App\Models\Company;
+use App\Models\Resume;
 use App\Models\User;
 use App\Models\Vacancy;
 use Illuminate\Http\JsonResponse;
@@ -90,6 +92,26 @@ class VacancyController extends Controller
         $vacancy->delete();
 
         return response()->json(['message' => 'Vacancy deleted successfully'], 200);
+    }
+
+
+    public function submitResume(ResumeRequest $request, Vacancy $vacancy): JsonResponse
+    {
+        $resumePath = $request->file('resume')->store('resumes');
+
+        $resumeData = [
+            'file_path' => $resumePath,
+            'vacancy_id' => $vacancy->id,
+            'user_id' => auth()->id(),
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+        ];
+
+        Resume::create($resumeData);
+
+        return response()->json(['message' => 'Resume submitted successfully'], 201);
     }
 
     /**
