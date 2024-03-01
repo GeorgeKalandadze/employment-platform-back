@@ -51,7 +51,7 @@ class Vacancy extends Model
 
         static::creating(function ($vacancy) {
             $slug = Str::random(24);
-            $vacancy->slug = $slug . '-' . Str::slug($vacancy->title);
+            $vacancy->slug = $slug.'-'.Str::slug($vacancy->title);
         });
     }
 }

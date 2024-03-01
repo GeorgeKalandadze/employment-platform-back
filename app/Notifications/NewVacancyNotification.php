@@ -14,6 +14,7 @@ class NewVacancyNotification extends Notification implements ShouldQueue
     use Queueable;
 
     protected $company;
+
     protected $vacancy;
 
     public function __construct(Company $company, Vacancy $vacancy)
@@ -30,11 +31,10 @@ class NewVacancyNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line('A new vacancy has been added by ' . $this->company->name)
-            ->line('Title: ' . $this->vacancy->title)
-            ->line('Description: ' . $this->vacancy->description)
-            ->action('View Vacancy', url('/vacancies/' . $this->vacancy->id))
+            ->line('A new vacancy has been added by '.$this->company->name)
+            ->line('Title: '.$this->vacancy->title)
+            ->line('Description: '.$this->vacancy->description)
+            ->action('View Vacancy', url('/vacancies/'.$this->vacancy->id))
             ->line('Thank you for using our application!');
     }
 }
-

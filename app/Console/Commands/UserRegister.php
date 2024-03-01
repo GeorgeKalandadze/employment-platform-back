@@ -15,6 +15,12 @@ class UserRegister extends Command
      */
     protected $signature = 'user:register {name} {email} {password}';
 
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Create a new user with email verification';
 
     /**
      * Execute the console command.
@@ -26,9 +32,9 @@ class UserRegister extends Command
         $password = $this->argument('password');
 
         $user = User::create([
-            "username" => $name,
-            "email" => $email,
-            "password" => Hash::make($password)
+            'username' => $name,
+            'email' => $email,
+            'password' => Hash::make($password),
         ]);
 
         $this->info('User registered successfully!');

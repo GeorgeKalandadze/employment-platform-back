@@ -41,10 +41,9 @@ class Course extends Model
         return $this->morphMany(Favorite::class, 'favoritable');
 
     }
+
     public function rates(): HasMany
     {
         return $this->hasMany(Rate::class);
     }
-
-
 }

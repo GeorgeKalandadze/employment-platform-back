@@ -67,7 +67,7 @@ Route::group(['middleware' => ['api', 'auth:api']], function () {
         Route::post('/toggle-favorite-course/{course}', 'toggleFavoriteCourse');
         Route::post('/toggle-favorite-vacancy/{vacancy}', 'toggleFavoriteVacancy');
         Route::get('/all-favorites', 'allFavorites');
-        Route::get('/all-favorite-courses',  'allFavoriteCourses');
+        Route::get('/all-favorite-courses', 'allFavoriteCourses');
         Route::get('/all-favorite-vacancies', 'allFavoriteVacancies');
     });
 
