@@ -18,7 +18,7 @@ class CompanyController extends Controller
      */
     public function index(): ResourceCollection
     {
-        $companies = Company::with('vacancies', 'courses', 'user')->get();
+        $companies = Company::with('vacancies', 'courses', 'user', 'socialNetworks')->get();
 
         return CompanyResource::collection($companies);
     }
@@ -31,7 +31,6 @@ class CompanyController extends Controller
         $user_id = auth()->id();
 
         $validatedData = $request->validated();
-
         $validatedData['user_id'] = $user_id;
 
         if ($request->hasFile('logo')) {
@@ -40,7 +39,18 @@ class CompanyController extends Controller
             $validatedData['logo'] = $logoPath;
         }
 
-        Company::create($validatedData);
+        $company = Company::create($validatedData);
+
+        if (isset($validatedData['links'])) {
+            $array = trim($validatedData['links'], '[]');
+            $links = explode(',', $array);
+
+            foreach ($links as $link) {
+                $company->socialNetworks()->create([
+                    'link' => $link,
+                ]);
+            }
+        }
 
         return response()->json(['message' => 'Company created successfully'], 201);
     }

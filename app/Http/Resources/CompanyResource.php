@@ -24,6 +24,7 @@ class CompanyResource extends JsonResource
             'website' => $this->website,
             'description' => $this->description,
             'user' => $this->user,
+            'social_links' => SocialNetworksResourse::collection($this->socialNetworks),
             'vacancies' => $this->vacancies,
             'courses' => $this->courses,
         ];

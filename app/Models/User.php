@@ -71,11 +71,6 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return $this->hasMany(Favorite::class);
     }
 
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
-
     public function followedCompanies(): BelongsToMany
     {
         return $this->belongsToMany(Company::class, 'company_followers', 'user_id', 'company_id')
@@ -90,5 +85,9 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function getJWTCustomClaims()
     {
         return [];
+    }
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
     }
 }

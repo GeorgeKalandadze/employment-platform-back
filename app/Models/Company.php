@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Company extends Model
@@ -42,5 +43,10 @@ class Company extends Model
     {
         return $this->belongsToMany(User::class, 'company_followers', 'company_id', 'user_id')
             ->withTimestamps();
+    }
+
+    public function socialNetworks(): HasMany
+    {
+        return $this->HasMany(SocialNetwork::class);
     }
 }
