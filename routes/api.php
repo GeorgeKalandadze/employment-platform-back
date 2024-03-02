@@ -58,6 +58,7 @@ Route::group(['middleware' => ['api', 'auth:api']], function () {
         Route::post('/{id}/views', 'updateViews')->name('views');
         Route::put('/{vacancy}', 'update')->name('update');
         Route::delete('/{vacancy}', 'destroy')->name('destroy');
+        Route::post('/{vacancy}/submit-resume', 'submitResume');
     });
 
     Route::controller(UserController::class)->group(function () {
