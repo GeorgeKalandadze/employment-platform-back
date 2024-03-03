@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notification;
 use App\Models\Vacancy;
 use App\Models\Resume;
 
-class ResumeSubmittedNotification extends Notification
+class ResumeSubmittedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
