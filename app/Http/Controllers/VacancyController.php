@@ -95,7 +95,6 @@ class VacancyController extends Controller
         return response()->json(['message' => 'Vacancy deleted successfully'], 200);
     }
 
-
     public function submitResume(ResumeRequest $request, Vacancy $vacancy): JsonResponse
     {
         $resumePath = $request->file('resume')->store('resumes');

@@ -8,7 +8,6 @@ use App\Http\Requests\VerifyEmailRequest;
 use App\Http\Resources\UserResource;
 use App\Jobs\SendRegistrationEmail;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller

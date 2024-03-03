@@ -2,15 +2,14 @@
 
 namespace App\Jobs;
 
-use App\Models\User;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Password;
 
-class SendRegistrationEmail implements ShouldQueue
+class SendForgotPasswordEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -29,7 +28,6 @@ class SendRegistrationEmail implements ShouldQueue
      */
     public function handle(): void
     {
-        $user = User::create($this->requestData);
-        event(new Registered($user));
+        Password::sendResetLink($this->requestData);
     }
 }
