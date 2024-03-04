@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
             CompanySeeder::class,
             CategorySeeder::class,
             JobTypeSeeder::class,
-            CitySeeder::class
+            CitySeeder::class,
         ]);
     }
 }

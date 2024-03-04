@@ -16,7 +16,7 @@ class SocialNetworksResourse extends JsonResource
     {
         return [
             'id' => $this->id,
-            'link' => $this->link
+            'link' => $this->link,
         ];
     }
 }

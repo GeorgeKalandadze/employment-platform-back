@@ -6,8 +6,8 @@ use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\VerifyEmailRequest;
 use App\Http\Resources\UserResource;
+use App\Jobs\SendRegistrationEmail;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
@@ -15,7 +15,8 @@ class AuthController extends Controller
     public function register(RegisterUserRequest $request): JsonResponse
     {
         $user = User::create($request->validated());
-        event(new Registered($user));
+
+        SendRegistrationEmail::dispatch($request->validated())->onQueue('registration');
 
         return response()->json(['msg' => 'Success registered!']);
     }
