@@ -14,6 +14,7 @@ class PasswordResetController extends Controller
     public function forgotPassword(ForgotPasswordRequest $request): JsonResponse
     {
         SendForgotPasswordEmail::dispatch($request->validated())->onQueue('forgot');
+
         return response()->json(['message' => 'Password reset email sent!'], 200);
     }
 

@@ -12,7 +12,7 @@
         <br />
         <table>
             <tr>
-                <td style="color: white">Holla {{ $name }}!</td>
+                <td style="color: white">Hollo {{ $name }}!</td>
             </tr>
             <br />
             <tr>
@@ -53,14 +53,8 @@
                     <p style="color: white">
                         If you have any problems, please contact
                         us:
-                        support@moviequotes.ge
+                        support@emploWeb.ge
                     </p>
-                </td>
-            </tr>
-            <br />
-            <tr>
-                <td>
-                    <p style="color: white">MovieQuotes crew</p>
                 </td>
             </tr>
         </table>
