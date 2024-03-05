@@ -30,45 +30,38 @@ class WeeklyReport extends Command
      */
     public function handle()
     {
-        $users = User::all();
-        $companies = Company::all();
-
         $startOfWeek = Carbon::now()->startOfWeek()->toDateString();
         $endOfWeek = Carbon::now()->endOfWeek()->toDateString();
 
+        $users = User::all();
+        $companies = Company::all();
 
-        foreach($users as $user) {
+        foreach ($users as $user) {
+            $this->sendWeeklyReport($user, $startOfWeek, $endOfWeek);
+        }
 
-            $newVacancies = $user->vacancies()
+        foreach ($companies as $company) {
+            $this->sendWeeklyReport($company, $startOfWeek, $endOfWeek);
+        }
+    }
+
+    private function sendWeeklyReport($entity, $startOfWeek, $endOfWeek)
+    {
+        $newVacancies = $entity->vacancies()
             ->whereBetween('created_at', [$startOfWeek, $endOfWeek])
             ->get();
 
-            $reportData = [
-                'creator' => $user->username,
-                'new_vacancies_count' => $newVacancies->count(),
-                'views_count' => $newVacancies->sum('views_count')
-            ];
+        $reportData = [
+            'creator' => $entity instanceof User ? $entity->username : $entity->name,
+            'new_vacancies_count' => $newVacancies->count(),
+            'views_count' => $newVacancies->sum('views_count'),
+        ];
 
-            Mail::to($user->email)->send(new WeeklyReportMail($reportData));
+        if ($entity instanceof Company) {
+            $newFollowers = $entity->followers()->get();
+            $reportData['new_followers'] = $newFollowers->count();
         }
-        foreach($companies as $company) {
 
-            $newVacancies = $company->vacancies()
-            ->whereBetween('created_at', [$startOfWeek, $endOfWeek])
-            ->get();
-            $newFollowers = $company->followers()
-           
-            ->get();
-
-            $reportData = [   
-                'creator' => $company->name,
-                'new_vacancies_count' => $newVacancies->count(),
-                'views_count' => $newVacancies->sum('views_count'),
-                'new_followers' => $newFollowers->count()
-            ];
-
-
-            Mail::to($company->email)->send(new WeeklyReportMail($reportData));
-        }
+        Mail::to($entity->email)->send(new WeeklyReportMail($reportData));
     }
 }
