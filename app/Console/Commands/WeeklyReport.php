@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Mail\WeeklyReportEmail;
+use App\Mail\WeeklyReportMail;
 use App\Models\Company;
 use App\Models\User;
 use Carbon\Carbon;
@@ -48,7 +48,7 @@ class WeeklyReport extends Command
             ];
 
 
-            Mail::to($user->email)->send(new WeeklyReportEmail($reportData));
+            Mail::to($user->email)->send(new WeeklyReportMail($reportData));
         }
         foreach($companies as $company) {
 
@@ -61,7 +61,7 @@ class WeeklyReport extends Command
                 // Add more report data as needed
             ];
 
-            Mail::to($user->email)->send(new WeeklyReportEmail($reportData));
+            Mail::to($user->email)->send(new WeeklyReportMail($reportData));
         }
     }
 }
