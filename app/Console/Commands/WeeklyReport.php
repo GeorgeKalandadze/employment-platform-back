@@ -23,7 +23,7 @@ class WeeklyReport extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Send a user activity report every week';
 
     /**
      * Execute the console command.
@@ -39,29 +39,36 @@ class WeeklyReport extends Command
 
         foreach($users as $user) {
 
-            $newPosts = $users->vacancies()
+            $newVacancies = $user->vacancies()
             ->whereBetween('created_at', [$startOfWeek, $endOfWeek])
             ->get();
 
             $reportData = [
-                'username' => $user->name,
+                'creator' => $user->username,
+                'new_vacancies_count' => $newVacancies->count(),
+                'views_count' => $newVacancies->sum('views_count')
             ];
-
 
             Mail::to($user->email)->send(new WeeklyReportMail($reportData));
         }
         foreach($companies as $company) {
 
-            $newPosts = $company->vacancies()
+            $newVacancies = $company->vacancies()
             ->whereBetween('created_at', [$startOfWeek, $endOfWeek])
             ->get();
+            $newFollowers = $company->followers()
+           
+            ->get();
 
-            $reportData = [
-                'comany_name' => $company->name,
-                // Add more report data as needed
+            $reportData = [   
+                'creator' => $company->name,
+                'new_vacancies_count' => $newVacancies->count(),
+                'views_count' => $newVacancies->sum('views_count'),
+                'new_followers' => $newFollowers->count()
             ];
 
-            Mail::to($user->email)->send(new WeeklyReportMail($reportData));
+
+            Mail::to($company->email)->send(new WeeklyReportMail($reportData));
         }
     }
 }

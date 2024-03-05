@@ -7,7 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class UpdateEmailVerifyMail extends Mailable
+class WeeklyReportMail extends Mailable
 {
     use Queueable;
     use SerializesModels;
