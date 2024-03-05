@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Mail\WeeklyReportMail;
+use App\Jobs\SendReportEmail;
 use App\Models\Company;
 use App\Models\User;
 use Carbon\Carbon;
@@ -62,6 +62,6 @@ class WeeklyReport extends Command
             $reportData['new_followers'] = $newFollowers->count();
         }
 
-        Mail::to($entity->email)->send(new WeeklyReportMail($reportData));
+        SendReportEmail::dispatch($reportData, $entity->email)->onQueue('report');
     }
 }
