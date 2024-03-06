@@ -53,7 +53,7 @@ In this employment platform website, you can view thousands of different vacanci
 1\. First of all you need to clone repository from github:
 
 ```sh
-git clone https://github.com/RedberryInternship/giorgi-surmanidze-movie-quotes-back.git
+git clone https://github.com/GeorgeKalandadze/employment-platform-back.git
 ```
 
 2\. Install dependencies by running:
