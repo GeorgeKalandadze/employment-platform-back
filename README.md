@@ -4,19 +4,23 @@
 
 ---
 
-In this employment platform website, you can view thousands of different vacancies and courses uploaded by user or company. Many features have been added:
+🔥 In this employment platform website, you can view thousands of different vacancies and courses uploaded by user or company. Many features have been added,check out some of them:
 
 -   JWT Authentication
 -   Email Verification
 -   Task Scheduling
 -   Queues & Jobs
 -   Update User Profile
+-   Change User Email & Username & Password
 -   Add Vacancy And Course To Favorite List
 -   Rate Course
 -   Follow Company And Get Email About Every New Vacancy Of This Company
 -   Forgot Password
 -   Reset Password
 -   Upload User Resume
+-   User Register Custom Command
+-   Email a weekly report to users and companies to see who's new week followers, Vacancies count and views
+-   Vacancy views count Feature
 
 #
 
@@ -131,7 +135,7 @@ And now you should provide **.env** file all the necessary environment variables
 
 > MAIL_FROM_NAME="${APP_NAME}"
 
-##### Now, you should be good to go!
+##### Now, you should be good to go 🔥!
 
 #
 
