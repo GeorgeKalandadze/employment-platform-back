@@ -19,6 +19,7 @@ class VacancyResource extends JsonResource
             [
                 'name' => $this->vacancyable->name,
                 'image' => $this->vacancyable->logo,
+                'address' => $this->vacancyable->address,
             ] :
             [
                 'name' => $this->vacancyable->username,
