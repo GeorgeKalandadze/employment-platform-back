@@ -51,11 +51,8 @@ Route::group(['middleware' => ['api', 'auth:api']], function () {
     });
 
     Route::controller(VacancyController::class)->prefix('vacancies')->name('vacancies.')->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/{vacancy}', 'show')->name('show');
         Route::post('/as-company', 'storeVacancyAsCompany')->name('AsCompany');
         Route::post('/as-user', 'storeVacancyAsUser')->name('AsUser');
-        Route::post('/{id}/views', 'updateViews')->name('views');
         Route::put('/{vacancy}', 'update')->name('update');
         Route::delete('/{vacancy}', 'destroy')->name('destroy');
         Route::post('/{vacancy}/submit-resume', 'submitResume');
@@ -87,4 +84,11 @@ Route::controller(AuthController::class)->group(function () {
 Route::controller(PasswordResetController::class)->name('password.')->group(function () {
     Route::post('/forgot-password', 'forgotPassword')->name('email');
     Route::post('/reset-password', 'passwordUpdate')->name('reset');
+});
+
+Route::controller(VacancyController::class)->prefix('vacancies')->name('vacancies.')->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/{vacancy}', 'show')->name('show');
+    Route::post('/{id}/views', 'updateViews')->name('views');
+
 });

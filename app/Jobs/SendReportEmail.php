@@ -18,6 +18,7 @@ class SendReportEmail implements ShouldQueue
      * Create a new job instance.
      */
     protected $reportData;
+
     protected $email;
 
     public function __construct(array $reportData, string $email)
